@@ -30,3 +30,23 @@
 
 # Debug files
 *.dSYM/
+
+# Keil files
+*.crf
+*.d
+*.inp
+*.iex
+*.axf
+*.htm
+*.amp
+*.burlats
+*.GRM
+*.Guillaume
+*.Jeremy
+*.lauvige
+*.Nau
+*.bak
+*.dep
+*.map
+*.plg
+*.tra
