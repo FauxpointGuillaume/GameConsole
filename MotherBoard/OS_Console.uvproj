@@ -415,11 +415,6 @@
               <FileType>2</FileType>
               <FilePath>.\boot\startup-rvds.s</FilePath>
             </File>
-            <File>
-              <FileName>read_me.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\boot\read_me.txt</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -621,11 +616,6 @@
               <FilePath>.\app\leds.c</FilePath>
             </File>
             <File>
-              <FileName>include_app.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\app\include_app.h</FilePath>
-            </File>
-            <File>
               <FileName>joystick.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\app\joystick.c</FilePath>
@@ -649,11 +639,6 @@
               <FileName>sd.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\app\sd.c</FilePath>
-            </File>
-            <File>
-              <FileName>interruption.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\interruption.c</FilePath>
             </File>
             <File>
               <FileName>interface.c</FileName>
@@ -1103,11 +1088,6 @@
               <FileType>2</FileType>
               <FilePath>.\boot\startup-rvds.s</FilePath>
             </File>
-            <File>
-              <FileName>read_me.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\boot\read_me.txt</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1309,11 +1289,6 @@
               <FilePath>.\app\leds.c</FilePath>
             </File>
             <File>
-              <FileName>include_app.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\app\include_app.h</FilePath>
-            </File>
-            <File>
               <FileName>joystick.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\app\joystick.c</FilePath>
@@ -1337,11 +1312,6 @@
               <FileName>sd.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\app\sd.c</FilePath>
-            </File>
-            <File>
-              <FileName>interruption.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\interruption.c</FilePath>
             </File>
             <File>
               <FileName>interface.c</FileName>

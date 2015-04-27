@@ -43,7 +43,6 @@
 ".\serial.o"
 ".\fsmc.o"
 ".\sd.o"
-".\interruption.o"
 ".\interface.o"
 ".\diskio.o"
 ".\ff.o"

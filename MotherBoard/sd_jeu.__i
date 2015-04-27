@@ -1,5 +1,0 @@
--c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I.\app -I.\boot -I.\libraries -I.\RTOS -I.\src -I.\SDIO 
--I C:\Keil\ARM\RV31\INC 
--I C:\Keil\ARM\CMSIS\Include 
--I C:\Keil\ARM\Inc\ST\STM32F4xx 
--DUSE_STDPERIPH_DRIVER -DSTM32F40XX -o "sd_jeu.o" --omf_browse "sd_jeu.crf" --depend "sd_jeu.d" "src\sd_jeu.c"
