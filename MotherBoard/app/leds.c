@@ -190,4 +190,19 @@
 				break;
 		}
 	}
+	
+	void Toggle_Led(Led LEDx)
+	{
+		static enum _Etat_Led preEtat = ON;
+		Turn_Led(LEDx, preEtat);
+		if (preEtat == ON)
+		{
+			preEtat = OFF;
+		}
+		else
+		{
+			preEtat = ON;
+		}
+	}
+		
 

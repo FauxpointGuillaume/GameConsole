@@ -28,37 +28,35 @@
 	#include "ff.h"
 	#include "diskio.h"
 	#include "serial.h"
-	#include "sd.h"
 	#include "interface.h"
+
+	#include "sd.h"
 	#include "buttons.h"
 	#include "joystick.h"
 	#include "leds.h"
 
 	/**
   ******************************************************************************
-	*	Enumérations
+	*	Define
   ******************************************************************************
   */
 	
-	/**
-  ******************************************************************************
-	*	Structures
-  ******************************************************************************
-  */
+	#define F_CPU 72000000
+	#define T_CPU (1/F_CPU)
 	
 	/**
   ******************************************************************************
 	*	Variables
   ******************************************************************************
   */
-	#ifdef __SRAM_Initialized
-	#define SRAM_BASE_ADDR = 0x680000000
-	#endif
 	
 	extern FRESULT res;
 	extern FIL fil;
 	extern FATFS fs32;
 	
+	extern FRESULT resBmp;
+	extern FIL filBmp;
+	extern FATFS fs32Bmp;
 	
 	
 	/**

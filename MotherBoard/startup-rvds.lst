@@ -858,8 +858,8 @@ ARM Macro Assembler    Page 14
 Command Line: --debug --xref --cpu=Cortex-M4.fp --apcs=interwork --depend=.\sta
 rtup-rvds.d -o.\startup-rvds.o -ID:\Programme\Keil4\ARM\RV31\INC -ID:\Programme
 \Keil4\ARM\CMSIS\Include -ID:\Programme\Keil4\ARM\Inc\ST\STM32F4xx --predefine=
-"__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --list=.\startup-rvds.lst boot\
-startup-rvds.s
+"__RTX SETA 1" --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --li
+st=.\startup-rvds.lst boot\startup-rvds.s
 
 
 
@@ -1953,4 +1953,4 @@ Symbol: __main
       At line 184 in file boot\startup-rvds.s
 Comment: __main used once
 2 symbols
-444 symbols in table
+445 symbols in table

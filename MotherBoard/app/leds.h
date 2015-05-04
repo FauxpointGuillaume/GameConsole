@@ -34,5 +34,7 @@
   */
 	void Initialize_Led(Led Ld);
 	void Turn_Led (Led Ld, Etat_Led etat);
+	void Toggle_Led(Led LEDx);
+
 	
 	#endif

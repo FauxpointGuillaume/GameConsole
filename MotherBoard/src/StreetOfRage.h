@@ -1,9 +1,8 @@
 #ifndef SOF_H
 #define SOF_H
 
-#include "stm32f4_discovery_sdio_sd.h"
-#include "ff.h"
-#include "diskio.h"
+#include <RTL.h>
+
 #include "interface.h"
 #include "buttons.h"
 #include "joystick.h"
@@ -12,6 +11,11 @@
 
 void initSOR(void);
 void StreetOfRage(void);
+void shortMovieEnding(GPU_Image *image);
+
+
+__task void taskSOR (void);
+
 
 #endif
 

@@ -11,29 +11,10 @@
 #ifndef sd
 #define sd
 
-#include "interface.h"
 #include "global.h"
+#include "interface.h"
+#include "BmpConvertor.h"
 
-		
-		//const uint32_t addr_jeu = 0x08008000;
-		
-		/* Bargraph position definitions */
-		#define BAR_ST      (8*6+3)
-		#define BAR_LEN     (217)
-		#define BAR_HGT     (20)
-		#define BAR_LN(ln)  ((ln)*24)
-		
-/**
-  ******************************************************************************
-	*	Structures
-  ******************************************************************************
-  */
-	struct _SD_Ressources {
-		
-	char ** liste_img ; // tableau qui contient le nom des images a récupérer sur la carte SD
-	int nb_img;
-
-} typedef SD_Ressources;
 	
 	/**
   ******************************************************************************
@@ -41,10 +22,20 @@
   ******************************************************************************
   */
 	
+	FRESULT initSD(FATFS* fs32);
 
-  void openImageFiles(char nom[20], FRESULT* res, FIL* fil, FATFS* fs32);
-	void readImageFiles(FRESULT* res, FIL* fil, FATFS* fs32);
+	FRESULT openImageFileRead(char nom[100], FIL* fil);
+	FRESULT openImageFileWrite(char nom[100], FIL* fil);
 
+	FRESULT closeImageFile(FIL* fil);
+	FRESULT readImageFiles(FIL* fil);
+	
+	FRESULT SD_LoadImage(GPU_Image *image, GPU_Layer *layer, int dx, int dy, FIL* fil);
+	FRESULT SD_LoadImageBmp(GPU_Image *image, char fileNameIn[100], GPU_Layer *layer, int dx, int dy, FRESULT* res, FIL* fil, FATFS* fs32);
+	
+	FRESULT SD_StartConvertion(GPU_Image *image, char fileNameIn[100],
+	FIL* filIn, FIL* filOut,
+	uint8_t alphaBack, uint8_t red, uint8_t green, uint8_t blue, uint8_t alphaPixelOn);
 
 	void SDIO_IRQHandler(void);
 	void SD_SDIO_DMA_IRQHANDLER(void);

@@ -199,20 +199,20 @@ uint32_t I2C_Recovery (uint32_t err) {
 
   io_dir (IO_SDA | IO_SCL, IO_OUT);     /* SDA and SCL pins are outputs       */
   io_pin (IO_SDA | IO_SCL, IO_HI);      /* Pull both lines high               */
-  Wait(1200);  
+  wait(1200);  
   io_pin (IO_SCL, IO_LOW);              /* Generate start ccondition          */
   io_pin (IO_SDA, IO_HI);               /* Pull SDA high                      */
   for (i = 0; i < 9; i++) {
     if (io_state (IO_SDA) == IO_HI) break;  /* Break if SDA released by slave */
     io_pin (IO_SCL, IO_HI);             /* Clock high                         */
-    Wait(1200);
+    wait(1200);
     io_pin (IO_SCL, IO_LOW);            /* Clock low                          */
-    Wait(1200);    
+    wait(1200);    
   }
   /* Send stop */
   io_pin (IO_SDA, IO_LOW);              /* Pull SDA low                       */
   io_pin (IO_SCL, IO_HI);               /* Pull SCL high                      */
-  Wait(1200);
+  wait(1200);
   io_pin (IO_SDA, IO_HI);               /* Pull SDA high == stop condition    */
 
   I2C1->CR1 &= ~I2C_CR1_SWRST;          /* Dereset I2C peripheral             */

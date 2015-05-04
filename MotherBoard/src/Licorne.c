@@ -1,54 +1,89 @@
 #include "Licorne.h"
 
-void initGIF(){
+void initGIF()
+{
 	/*
 			Pour test GIF unicorn
 	*/
-	GPU_ConfigurePlane(Plane_One,START_ADRESSE_DATA_PLANE1,320,240);
-	GPU_ConfigurePlane(Plane_Two,START_ADRESSE_DATA_PLANE2,3200,240);
-	GPU_ConfigurePlane(Plane_Three,START_ADRESSE_DATA_PLANE3,320,240);
-	GPU_ConfigurePlane(Plane_Four,START_ADRESSE_DATA_PLANE4,320,240);
-
-	PLANE.Enable =1;
-	PLANE.Alpha_On =1;
-	PLANE.Plan_Enable = 0x3;
-	PLANE.Test_On=0;
+	GPU_ConfigureLayer(&Layer_1, LAYER1_START_ADDRESS, 320, 240);
+	GPU_ConfigureLayer(&Layer_2, LAYER2_START_ADDRESS, 3200, 240);
+	GPU_ConfigureLayer(&Layer_3, LAYER3_START_ADDRESS, 320, 240);
+	GPU_ConfigureLayer(&Layer_4, LAYER4_START_ADDRESS, 320, 240);
 	
-	GPU_MAJ_PLAN();
+	Display_conf.Enable =1;
+	Display_conf.Alpha_On =1;
+	Display_conf.Plan_Enable = 0x3;
+	Display_conf.Test_On=0;
+	
+	GPU_UpdateDisplayConfig();
 }
 
 
-void GIF(GPU_Plane plane)
+void GIF(GPU_Layer *layer)
 {	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 	
-	GPU_HScroll (plane, 320, 1);
-	Wait(5000000);
+	GPU_HScroll (layer, 320, 1);
+	wait(5000000);
 		
-	GPU_HScroll (plane, 3200, 0);
-	Wait(5000000);
+	GPU_HScroll (layer, 3200, 0);
+	wait(5000000);
 }
 
+__task void taskUnicorn (void)
+{
+	// Initialize the GIF unicorn
+	GPU_Image back;
+	GPU_Image unicorn;
+	
+	uint8_t stateGif = 0;
+	
+	GPU_NewImage(&back, 320, 240, "back", Layer_1.addr);
+	// SD_LoadImage(&back, Plane_One, 0, 0, &fil);
+	GPU_NewImage(&unicorn, 3200, 240, "unicorn", Layer_2.addr);
+	// SD_LoadImage(&unicorn, Plane_Two, 0, 0, &fil);
+	
+	initGIF();
+	
+	while(1)
+	{
+		Toggle_Led(LED3);
+		stateGif++;
+		
+		if (stateGif == 10)
+		{
+				GPU_HScroll (&Layer_2, 3200, 0);
+				stateGif = 0;
+		}
+		else
+		{
+				GPU_HScroll (&Layer_2, 320, 1);
+		}	
+		//wait(500000);
+		os_dly_wait(200);
+
+	}
+}
 

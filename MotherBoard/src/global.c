@@ -16,9 +16,13 @@
 	
 	#include "global.h"
 	
-		FRESULT res;
+	FRESULT res;
 	FIL fil;
 	FATFS fs32;
+	
+	FRESULT resBmp;
+	FIL filBmp;
+	FATFS fs32Bmp;
 
 
 	/**
