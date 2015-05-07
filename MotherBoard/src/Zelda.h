@@ -27,10 +27,30 @@
 		MOVE_UP,
 		MOVE_DOWN,
 		
-		MOVE_SWORD,
+		MOVE_DIAG_UP_RIGHT,
+		MOVE_DIAG_RIGHT_UP,
+		
+		MOVE_DIAG_DOWN_RIGHT,
+		MOVE_DIAG_RIGHT_DOWN,
+		
+		MOVE_DIAG_UP_LEFT,
+		MOVE_DIAG_LEFT_UP,
+		
+		MOVE_DIAG_DOWN_LEFT,
+		MOVE_DIAG_RIGHT_LEFT,		
+		
+		MOVE_SWORD_RIGHT,
+		MOVE_SWORD_LEFT,
+		MOVE_SWORD_UP,
+		MOVE_SWORD_DOWN,
+		
 		MOVE_HIT,
 		
-		MOVE_IDLE
+		MOVE_IDLE,
+		MOVE_IDLE_UP,
+		MOVE_IDLE_DOWN,
+		MOVE_IDLE_LEFT,
+		MOVE_IDLE_RIGHT
 	}typedef movement;
 	
 	/**
@@ -39,8 +59,29 @@
   ******************************************************************************
   */
 	
-	int blockMovementLink(int nextLinkPosX, int nextLinkPosY;
-
+	int blockMovementLink(void);
+	void refreshScreen(void);
+	int updatePosBack(void);
+	
+	void scrollUp(void);
+	void scrollDown(void);
+	void scrollLeft(void);
+	void scrollRight(void);
+	
+	void animLink(uint16_t nbAnimLink, uint16_t offsetX, uint16_t offsetY, 
+							uint16_t sizeX, uint16_t sizeY, uint16_t xDiff);
+	void animLinkIdleDown(void);
+	void animLinkIdleLeft(void);
+	void animLinkIdleUp(void);
+	void animLinkIdleRight(void);
+	void animLinkDown(void);
+	void animLinkUp(void);
+	void animLinkLeft(void);
+	void animLinkRight(void);
+	void animLinkSwordDown(void);
+	void animLinkSwordUp(void);
+	void animLinkSwordLeft(void);
+	void animLinkSwordRight(void);
 	
 	__task void taskZelda (void);
 	

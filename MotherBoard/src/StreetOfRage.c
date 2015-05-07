@@ -15,6 +15,21 @@ void initSOR(){
 	Display_conf.Test_On=0;
 	
 	GPU_UpdateDisplayConfig();
+	
+	GPU_HScroll (&Layer_1, 0,1);
+	GPU_VScroll (&Layer_1, 0,1);
+	
+	GPU_HScroll (&Layer_2, 0,1);
+	GPU_VScroll (&Layer_2, 0,1);
+	
+	GPU_HScroll (&Layer_3, 0,1);
+	GPU_VScroll (&Layer_3, 0,1);
+	
+	GPU_HScroll (&Layer_4, 0,1);
+	GPU_VScroll (&Layer_4, 0,1);
+	
+	
+	GPU_ConfigureOutput(MODE_VGA);
 }
 
 void shortMovieEnding(GPU_Image *image)
@@ -70,6 +85,9 @@ void shortMovieEnding(GPU_Image *image)
 	GPU_WriteText (&Layer_3, 140, 60, mess, Couleur);
 	wait(100000);
 	GPU_WriteText (&Layer_3, 140, 60, mess, Couleur);
+	
+	wait(100000);
+	
 }
 
 
@@ -94,7 +112,7 @@ void StreetOfRage()
 	GPU_Image Blaze;
 		
 	GPU_NewImage(&Axel,320,240,"axel",base);
-	GPU_NewImage(&Blaze,320,240,"Blaze",base_b);
+	GPU_NewImage(&Blaze,320,240,"blaze",base_b);
 	
 	GPU_ClearRect(&Layer_2,0,0,320,240);
 
@@ -113,6 +131,7 @@ void StreetOfRage()
 		{
 			shortMovieEnding(&Blaze);
 			boss_hit = 0;
+			return;
 		}
 		
 		if (event_boss == 1 && go_boss == 1)
@@ -285,11 +304,9 @@ __task void taskSOR (void)
 {
 	initSOR();
 	
-	while(1)
-	{
-		Toggle_Led(LED2);		
-		StreetOfRage();
-		//os_dly_wait(200);
-
-	}
+	Toggle_Led(LED2);		
+	StreetOfRage();
+	os_tsk_create(taskMenu,15);
+	os_tsk_delete_self ();
+	
 }

@@ -7,6 +7,7 @@
 #include "buttons.h"
 #include "joystick.h"
 #include "leds.h"
+#include "global.h"
 
 
 void initSOR(void);

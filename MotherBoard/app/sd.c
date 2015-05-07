@@ -112,10 +112,10 @@ FRESULT SD_LoadImage(GPU_Image *image, GPU_Layer *layer, int dx, int dy, FIL* fi
 {
 	FRESULT res;
 	
-	if ((res = openImageFileRead(image->name, fil)) != FR_OK)
+/*	if ((res = openImageFileRead(image->name, fil)) != FR_OK)
 	{
 		return res;
-	}
+	}*/
 	
 	GPU_PreSendData(image, dx, dy, layer);
 	
@@ -146,10 +146,10 @@ FRESULT SD_StartConvertion(GPU_Image *image, char fileNameIn[100],
 		return res;
 	}	
 	// Ouverture de l'image qui va être convertit
-	if ((res = openImageFileWrite(image->name, filOut)) != FR_OK)
+/*	if ((res = openImageFileWrite(image->name, filOut)) != FR_OK)
 	{
 		return res;
-	}	
+	}	*/
 	
 	// Convertion de l'image BMP
 	Convertion(filIn, filOut, alphaBack, pixelTransparent, alphaPixelOn);	

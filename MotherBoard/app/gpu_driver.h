@@ -110,15 +110,15 @@
 			/**
 			*@brief Number of HLCK period to hold the address, range : 0 to 15
 			*/
-			#define		GPU_FSMC_ADDSET					10
+			#define		GPU_FSMC_ADDSET					15
 			/**
 			*	@brief Number of HLCK period to hold the DATA, range : 0 to 25
 			*/
-				#define		GPU_FSMC_DATAST					10
+				#define		GPU_FSMC_DATAST					25
 			/**
 			 *@brief Time between two FSMC operation, range : 0 to 16
 			*/
-			#define		GPU_FSMC_BUSTURN					10
+			#define		GPU_FSMC_BUSTURN					15
 		/**
       * @}
       */  //Fin FSMC

@@ -22,6 +22,7 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
+	#include <RTL.h>
 	
 	/** Includes pour le SDIO **/
 	#include "stm32f4_discovery_sdio_sd.h"
@@ -57,6 +58,11 @@
 	extern FRESULT resBmp;
 	extern FIL filBmp;
 	extern FATFS fs32Bmp;
+	
+	extern OS_SEM Sem_Menu;
+	
+	__task void taskMenu (void);
+
 	
 	
 	/**

@@ -93,8 +93,13 @@ GPU_Layer Layer_4;
 	
 /***** Création d'une structure d'une image *****/
 	void GPU_NewImage(GPU_Image *image, uint16_t width, uint16_t height, char * name, uint32_t addr){
-		image->name = (char *)malloc(sizeof(strlen(name)));
-		strcpy(image->name,(const char *) name);
+		int i;
+		for(i=0; i<31; i++){
+				image->name[i] = name[i];
+				if(name[i] == 0)
+					break;
+		}		
+  	image->name[31] = 0;
 		
 		image->height = height;
 		image->width = width;

@@ -12,6 +12,7 @@
 	#ifndef INTERFACE_H
 	#define INTERFACE_H
 
+	#include <stm32f4xx.h>
 	#include "gpu_driver.h"
 
 /**
@@ -154,7 +155,7 @@
         * @brief  Image class
         */
         struct GPU_Image {
-          char* 	 name;
+          char name[32];
           uint16_t width;
           uint16_t height;
           uint32_t addr;      

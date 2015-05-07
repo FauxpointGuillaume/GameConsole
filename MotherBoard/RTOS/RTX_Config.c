@@ -40,7 +40,7 @@
 //   <i> Set the stack size for tasks which is assigned by the system.
 //   <i> Default: 512
 #ifndef OS_STKSIZE
- #define OS_STKSIZE     64
+ #define OS_STKSIZE     4096
 #endif
 
 // <q>Check for the stack overflow
@@ -73,7 +73,7 @@
 //   <i> Set the timer clock value for selected timer.
 //   <i> Default: 6000000  (6MHz)
 #ifndef OS_CLOCK
- #define OS_CLOCK       8000000
+ #define OS_CLOCK       72000000
 #endif
 
 //   <o>Timer tick value [us] <1-1000000>
