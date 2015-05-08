@@ -307,6 +307,8 @@ __task void taskSOR (void)
 	Toggle_Led(LED2);		
 	StreetOfRage();
 	
+	os_dly_wait(100);
+	
 	os_tsk_create(taskMenu,15);
 	os_tsk_delete_self ();
 	
