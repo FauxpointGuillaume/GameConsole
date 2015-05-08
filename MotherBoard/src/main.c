@@ -45,6 +45,7 @@ int main (void)
 	Initialize_Led(LED5);
 	Initialize_Led(LED6);
 	Initialize_Led(LED7);
+	Initialize_Led(LED8);
 	
 	Turn_Led(LED1,ON);
 	GPU_Init();
@@ -316,13 +317,11 @@ __task void taskMenu (void)
 /*----------------------------------------------------------------------------
  *   Task 4:  Demo
  *---------------------------------------------------------------------------*/
+int demo(void);
+
 __task void taskDemo (void) 
 {
-// lalalala je suis une demo
-
-	// Pour patienter
-	os_dly_wait(100); // en pas de 10 ms
-	
+	demo();
 	
 	// fin de la demo, pour relancer le menu
 	os_tsk_create(taskMenu,15);
@@ -330,6 +329,168 @@ __task void taskDemo (void)
 	while (1){};
 	
 }
+
+int demo()
+{
+	int i;
+	uint32_t touche;
+	GPU_Color aColor;
+	GPU_Image anImage;
+	char message[25] = "Stay awhile and listen...";
+	/**
+	******************************************************************************
+	*	Initialisation
+	******************************************************************************
+	*/	
+
+
+	GPU_ConfigureLayer(&Layer_1, LAYER1_START_ADDRESS, 640, 480);
+	GPU_ConfigureLayer(&Layer_2, LAYER2_START_ADDRESS, 320, 240);
+	GPU_ConfigureLayer(&Layer_3, LAYER3_START_ADDRESS, 320, 240);
+	GPU_ConfigureLayer(&Layer_4, LAYER4_START_ADDRESS, 320, 240);
+		
+	Display_conf.Enable =1;
+	Display_conf.Alpha_On =1;
+	Display_conf.Plan_Enable = 0x7;
+	Display_conf.Test_On=0;
+	
+	GPU_UpdateDisplayConfig();
+	
+	GPU_HScroll (&Layer_1, 0,1);
+	GPU_VScroll (&Layer_1, 0,1);
+	
+	GPU_HScroll (&Layer_2, 0,1);
+	GPU_VScroll (&Layer_2, 0,1);
+	
+	GPU_HScroll (&Layer_3, 0,1);
+	GPU_VScroll (&Layer_3, 0,1);
+	
+	GPU_HScroll (&Layer_4, 0,1);
+	GPU_VScroll (&Layer_4, 0,1);
+		
+	GPU_ConfigureOutput(MODE_LCD);		
+
+	wait(20000000);
+
+	while(1)
+	{
+		if (!is_button_pressed(TAMPER))
+		{	
+			GPU_NewImage(&anImage ,70, 96, "Pikachu", Layer_3.addr);
+			GPU_BitBlitL2L (&Layer_3, 0, 0, 96, 80, &Layer_2, 250, 20);			
+
+			aColor.R = 7;
+			aColor.G = 1;
+			aColor.B = 15;
+			aColor.A = 4;
+			GPU_FillRect (&Layer_1,56,56,45,45, aColor);
+	
+			GPU_SetRectAlphaValue (&Layer_2,0,0,320,240,3);
+			
+			GPU_ClearRect(&Layer_1,0,0,50,50);	
+			wait(100000);
+			
+			aColor.R = 8;
+			aColor.G = 1;
+			aColor.B = 2;
+			aColor.A = 15;
+			GPU_FillRect (&Layer_1,56,56,45,45, aColor);
+	
+			GPU_SetRectAlphaValue (&Layer_2,0,0,320,240,12);
+			
+			wait(100000);
+		}
+		
+		if(!is_button_pressed(USER))
+		{
+			aColor.R = 15;
+			aColor.G = 8;
+			aColor.B = 2;
+			aColor.A = 15;			
+			GPU_DrawCircle(&Layer_3, 15, 90, 10, aColor);
+			aColor.R = 8;
+			aColor.G = 15;
+			aColor.B = 12;
+			aColor.A = 15;
+			GPU_DrawLine(&Layer_3, 100, 100, 200, 200, aColor);
+			
+			wait(1000000);
+			
+			aColor.R = 15;
+			aColor.G = 8;
+			aColor.B = 2;
+			aColor.A = 15;
+			GPU_DrawLine(&Layer_3, 100, 100, 200, 200, aColor);
+			aColor.R = 8;
+			aColor.G = 15;
+			aColor.B = 12;
+			GPU_DrawCircle(&Layer_3, 15, 90, 10, aColor);
+			GPU_ClearRect(&Layer_3,10,200,200,20);
+			GPU_WriteText (&Layer_3, 10, 200, message, aColor);
+		
+		
+			GPU_ClearRect(&Layer_1,200,10,320,240);
+			while(!is_button_pressed(USER));
+			while(is_button_pressed(USER));
+			while(!is_button_pressed(USER));
+					
+			GPU_PreSendDataToLayer(200, 10, 320, 240, &Layer_1);
+			GPU_DMAStartTransfer();	
+			for(i=0; i<(320*240); i++){
+				GPU_DATA16 = 0xf000|i;
+			}
+			GPU_DMAStopTransfer();	
+			
+			while(!is_button_pressed(USER));
+			while(is_button_pressed(USER));
+			while(!is_button_pressed(USER));
+			
+			GPU_ClearScreen(&Layer_1);
+			
+			while(!is_button_pressed(USER));
+			while(is_button_pressed(USER));
+			while(!is_button_pressed(USER));
+			
+			SD_LoadImageToLayer(&Layer_1, 640, 480, &fil, "zelda_bg.bin");
+		}
+		
+		touche = JOY_GetKeys();
+		if(touche&JOY_RIGHT){
+			if (Layer_1.scrDx <= 320){
+				GPU_HScroll (&Layer_1, 1, 1);
+			}
+		}
+		if(touche&JOY_LEFT){
+			if (Layer_1.scrDx > 0){
+				GPU_HScroll (&Layer_1, 1, 0);
+			}
+		}
+		if(touche&JOY_UP){
+			if (Layer_1.scrDy > 0){
+				GPU_VScroll (&Layer_1, 1, 0);
+			}
+		}
+		if(touche&JOY_DOWN){
+			if (Layer_1.scrDy <= 240){
+				GPU_VScroll (&Layer_1, 1, 1);
+			}
+		}
+		wait(1000000);
+	} //Fin boucle principale
+
+} //Fin demo
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*----------------------------------------------------------------------------
  *   Task 5:  Credit

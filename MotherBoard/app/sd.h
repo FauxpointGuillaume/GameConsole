@@ -22,7 +22,7 @@
 	
 	FRESULT SD_LoadImage(GPU_Image *image, int dx, int dy, FIL* fil);
 	FRESULT SD_LoadImageBmp(GPU_Image *image, char fileNameIn[100], GPU_Layer *layer, int dx, int dy, FRESULT* res, FIL* fil, FATFS* fs32);
-	FRESULT SD_LoadImagetToLayer(GPU_Layer *layer, int dx, int dy, FIL* fil, char nom[100]);
+	FRESULT SD_LoadImageToLayer(GPU_Layer *layer, int dx, int dy, FIL* fil, char nom[100]);
 	
 	
 	FRESULT SD_StartConvertion(GPU_Image *image, char fileNameIn[100],

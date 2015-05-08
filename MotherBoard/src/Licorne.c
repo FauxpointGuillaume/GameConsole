@@ -67,7 +67,7 @@ __task void taskUnicorn (void)
 	SD_LoadImage(&back, 0, 0, &fil);
 	GPU_NewImage(&unicorn, 3200, 240, "uni", Layer_2.addr);
 	SD_LoadImage(&unicorn, 0, 0, &fil);
-	SD_LoadImagetToLayer(&Layer_1, 0, 0, &fil, "backs");
+	SD_LoadImageToLayer(&Layer_1, 0, 0, &fil, "backs");
 	
 	initGIF();
 	

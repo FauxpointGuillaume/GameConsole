@@ -121,7 +121,7 @@ FRESULT SD_LoadImage(GPU_Image *image, int dx, int dy, FIL* fil){
 }
 
 
-FRESULT SD_LoadImagetToLayer(GPU_Layer *layer, int dx, int dy, FIL* fil, char nom[100]){
+FRESULT SD_LoadImageToLayer(GPU_Layer *layer, int dx, int dy, FIL* fil, char nom[100]){
 	FRESULT res;
 	
 	if ((res = openImageFileRead(nom, fil)) != FR_OK)
