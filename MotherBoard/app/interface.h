@@ -12,7 +12,6 @@
 	#ifndef INTERFACE_H
 	#define INTERFACE_H
 
-	#include <stm32f4xx.h>
 	#include "gpu_driver.h"
 
 /**
@@ -436,7 +435,7 @@
             *	@brief NOT IMPLENMENTED
             **/
             uint8_t GPU_checkDMA (void);
-            void GPU_PreSendData(GPU_Image *image, uint32_t dx, uint32_t dy, GPU_Layer* layer);
+						void GPU_PreSendDataToLayer(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GPU_Layer* layer);
       /**
         * @}
         */

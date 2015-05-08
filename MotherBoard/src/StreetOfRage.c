@@ -2,7 +2,7 @@
 
 void initSOR(){
 	/* 
-		Pour test Street of rage
+		Configure the plane
 	*/
 	GPU_ConfigureLayer(&Layer_1, LAYER1_START_ADDRESS, 960, 240);
 	GPU_ConfigureLayer(&Layer_2, LAYER2_START_ADDRESS, 320, 240);
@@ -306,6 +306,7 @@ __task void taskSOR (void)
 	
 	Toggle_Led(LED2);		
 	StreetOfRage();
+	
 	os_tsk_create(taskMenu,15);
 	os_tsk_delete_self ();
 	

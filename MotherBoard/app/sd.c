@@ -117,7 +117,7 @@ FRESULT SD_LoadImage(GPU_Image *image, GPU_Layer *layer, int dx, int dy, FIL* fi
 		return res;
 	}*/
 	
-	GPU_PreSendData(image, dx, dy, layer);
+	//GPU_PreSendData(image, dx, dy, layer);
 	
 	if ((res = readImageFiles(fil)) != FR_OK)
 	{

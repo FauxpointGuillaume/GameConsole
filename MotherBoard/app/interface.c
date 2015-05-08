@@ -722,15 +722,15 @@ uint8_t GPU_checkDMA (void)
 	return (GPU_ReadReg(DMACTRL) & 0x2);
 }
 
-void GPU_PreSendData(GPU_Image *image, uint32_t dx, uint32_t dy, GPU_Layer* layer)
+void GPU_PreSendDataToLayer(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GPU_Layer* layer)
 {
-	uint32_t addr = layer->addr + dx + dy*layer->width;
+	uint32_t addr = layer->addr + x + y*layer->width;
 	
-	image->addr = addr;
+	GPU_WriteReg(DMADSTADDR_L,addr&0xFFFF);
+	GPU_WriteReg(DMADSTADDR_H,(addr&0xFFFF0000)>>16);
 	
-	GPU_WriteReg(DMADSTADDR,addr);
-	
-	GPU_WriteReg(DMAIMGSIZE,(image->width) + ((image->height) << 16));
+	GPU_WriteReg(DMAIMGSIZE_L, dx);
+	GPU_WriteReg(DMAIMGSIZE_H, dy);
 	
 	GPU_WriteReg(DMADSTSIZER,layer->width);
 	

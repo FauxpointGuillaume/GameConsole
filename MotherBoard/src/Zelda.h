@@ -69,7 +69,7 @@
 	void scrollRight(void);
 	
 	void animLink(uint16_t nbAnimLink, uint16_t offsetX, uint16_t offsetY, 
-							uint16_t sizeX, uint16_t sizeY, uint16_t xDiff);
+							uint16_t sizeX, uint16_t sizeY, uint16_t xDiff, int16_t curLinkPosX, int16_t curLinkPosY);
 	void animLinkIdleDown(void);
 	void animLinkIdleLeft(void);
 	void animLinkIdleUp(void);

@@ -1,20 +1,26 @@
 /**
   ******************************************************************************
   * @file    global.c
-  * @author  Jeremy LAUVIGE (4AE-SE) 
+  * @author  Guillaume Fauxpoint
   * @version V0.1
   * @date    14-Mars-2014
-  * @brief  Contient toutes les fonctions utiles au fonctionnement général 
+  * @brief  Include the SD variable 
   ******************************************************************************
   */
 
-/**
+	/**
   ******************************************************************************
 	*	Includes
   ******************************************************************************
   */
 	
 	#include "global.h"
+	
+	/**
+  ******************************************************************************
+	*	Variable
+  ******************************************************************************
+  */
 	
 	FRESULT res;
 	FIL fil;
@@ -24,7 +30,6 @@
 	FIL filBmp;
 	FATFS fs32Bmp;
 
-	OS_SEM Sem_Menu;
 
 	/**
   ******************************************************************************
@@ -33,7 +38,7 @@
   */
 
 	/**
-  * @brief  redéfinition de fputc pour afficher les caractères envoyés par le printf sur le port série
+  * @brief  Overload the putc function
   * @param  int ch : caractère
 	* @param  FILE *f : fichier
   * @retval int ch
@@ -47,10 +52,4 @@ int fputc(int ch, FILE *f)
     return ch;
 }
 	
-		/**
-  * @brief  fonction de test du sdio
-  * @param  FRESULT* res, FIL* fil, FATFS* fs32
-  * @retval void
-  */
-
 

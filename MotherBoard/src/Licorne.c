@@ -2,9 +2,6 @@
 
 void initGIF()
 {
-		GPU_Color aColor;
-
-	
 	/*
 			Pour test GIF unicorn
 	*/

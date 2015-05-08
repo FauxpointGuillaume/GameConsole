@@ -13,7 +13,6 @@
 	#define GPU_DRIVER_H
 
 	#include <stm32f4xx.h>
-
 /**
  * \page GPU_DRIVER GPU_DRIVER
  * \section GPU_DRIVER_intro Introduction
@@ -256,10 +255,14 @@
             * @{
             */
 			#define		DMACTRL				0x0500
-			#define		DMAIMGSIZE		0x0501
-			#define		DMAPIXCNT			0x0502
-			#define		DMADSTADDR		0x0503
-			#define 	DMADSTSIZER		0x0504
+			#define		DMADATA				0x0501
+			#define		DMAIMGSIZE_L	0x0502
+			#define		DMAIMGSIZE_H	0x0503
+			#define 	DMAPIXCNT_L		0x0504
+			#define		DMAPIXCNT_H		0x0505
+			#define		DMADSTADDR_L	0x0506
+			#define		DMADSTADDR_H	0x0507
+			#define 	DMADSTSIZER		0x0508
 			/**
         * @}
         */

@@ -6,11 +6,13 @@
 // Mutex pour le mouvement du personnage
 OS_ID Mutex_Movement;
 movement linkMovement;
+movement preLinkMovement;
 movement nextLinkMovement;
 
 // Variable pour les images
 GPU_Image LinkSprite;
 GPU_Image backLink;
+GPU_Image bootLink;
 GPU_Image soldier;
 
 // Variable de position de link
@@ -48,26 +50,85 @@ uint16_t colorBlock = 0x000;
 // Fichier contenant les chemins
 FIL filPathFinding;
 
-// Tache idle : Tache qui scrute les inputs pour décider du mouvement du personnage et
-// fais évoluer la suite du jeu, met a jour a chaque input le type de mouvement,
-// pensez a protoger ces variables globales avec des mutex
-// Prio basse
+/*Long ago, Ganon, pince of darkness, 
+stole the triforce of power. Princess 
+zelda of hyrule broke the triforce 
+of wisdom into eight pieces and hid 
+them from ganon before she was 
+kidnapped by ganon's minions. 
+Link you muste find the pieces 
+and save ZELDA*/
+
+void bootMenu()
+{
+	GPU_Color Couleur;	
+	GPU_NewColor(&Couleur,255,255,255,255);
+	
+	GPU_BitBlitI2L(&bootLink, 0, 0, 320, 240,&Layer_1, 0,0);
+	
+	while(is_button_pressed(TAMPER))
+	{
+			GPU_WriteText(&Layer_2, 110, 10, "Press tamper button", Couleur);
+			os_dly_wait(150);
+			GPU_ClearScreen(&Layer_2);
+			os_dly_wait(150);
+	}		
+}
+
+
+void opening()
+{
+	int cpt;
+	GPU_Color Couleur;
+	
+		GPU_ClearScreen(&Layer_3);
+
+	
+	GPU_NewColor(&Couleur,0,0,0,200);
+	GPU_FillRect(&Layer_3, 0 ,0,320,480, Couleur);
+	GPU_NewColor(&Couleur,255,255,255,255);
+
+	GPU_WriteText(&Layer_3, 50, 250, "Long ago, Ganon, prince of darkness", Couleur);
+	GPU_WriteText(&Layer_3, 50, 270, "stole the triforce of power. Princess", Couleur);
+	GPU_WriteText(&Layer_3, 50, 290, "zelda of hyrule broke the triforce", Couleur);
+	GPU_WriteText(&Layer_3, 50, 310, "of wisdom into eight pieces and hid ", Couleur);
+	GPU_WriteText(&Layer_3, 50, 330, "them from ganon before she was ", Couleur);
+	GPU_WriteText(&Layer_3, 50, 350, "kidnapped by Ganon's minions. ", Couleur);
+	GPU_WriteText(&Layer_3, 50, 370, "Link you must find the pieces ", Couleur);
+	GPU_WriteText(&Layer_3, 50, 390, "and save ZELDA", Couleur);
+
+	for (cpt =0;cpt < 200 ; ++cpt)
+	{
+		GPU_VScroll (&Layer_3, 1,1);
+		os_dly_wait(20);
+
+	}
+
+	os_dly_wait(1000);
+
+	GPU_ClearScreen(&Layer_3);
+	GPU_NewColor(&Couleur,0,0,0,0);
+	GPU_FillRect(&Layer_3, 0 ,0,320,480, Couleur);	
+	
+}
+
+
 __task void taskZelda (void)
 {
 	uint32_t touche;
 	
-	// Chargement des images du niveau de base
-	
-	// ouverture du fichier de pathfinding en lecture seule
+	// Chargement des images du niveau de base	
 	GPU_NewImage(&backLink, mapDstX, mapDstY, "back", 0x0200000);
-	GPU_NewImage(&LinkSprite, 320, 240, "link", 0x0100000);
+	GPU_NewImage(&LinkSprite, 320, 360, "link", 0x0100000);
+	GPU_NewImage(&bootLink, 320, 240, "boot", 0x0400000);
 	
 	GPU_ConfigureLayer(&Layer_1, LAYER1_START_ADDRESS, backSizeX, backSizeY);
-	GPU_ConfigureLayer(&Layer_2, LAYER2_START_ADDRESS, 320, 240);
+	GPU_ConfigureLayer(&Layer_2, LAYER2_START_ADDRESS, 320, 380);
+	GPU_ConfigureLayer(&Layer_3, LAYER3_START_ADDRESS, 320, 480);
 	
 	Display_conf.Enable =1;
 	Display_conf.Alpha_On =1;
-	Display_conf.Plan_Enable = 0x3;
+	Display_conf.Plan_Enable = 0x7;
 	Display_conf.Test_On=0;
 	
 	GPU_UpdateDisplayConfig();
@@ -78,16 +139,26 @@ __task void taskZelda (void)
 	GPU_HScroll (&Layer_2, 0,1);
 	GPU_VScroll (&Layer_2, 0,1);
 	
+	GPU_HScroll (&Layer_3, 0,1);
+	GPU_VScroll (&Layer_3, 0,1);
+	
 	GPU_ClearScreen(&Layer_2);
+	GPU_ClearScreen(&Layer_3);
+	GPU_ClearScreen(&Layer_4);
+	
 	GPU_ConfigureOutput(MODE_VGA);
+	
+	bootMenu();	
 	
 	GPU_BitBlitI2L(&backLink, backPosX, backPosY, backSizeX, backSizeY,&Layer_1, 0,0);
 	animLinkIdleDown();	
+	preLinkMovement = MOVE_DOWN;
 	
 	openImageFileRead("path", &filPathFinding);
+	opening();
 	
 	while(1)
-	{
+	{		
 		touche = JOY_GetKeys();
 		Toggle_Led(LED4);
 		
@@ -98,6 +169,7 @@ __task void taskZelda (void)
 				nextLinkPosY -= nbPixelMove;
 				nextBackPosY -= nbPixelMove;
 				nextLinkMovement = MOVE_UP;
+				preLinkMovement = MOVE_UP;
 				break;
 			}
 			case JOY_DOWN:
@@ -105,6 +177,7 @@ __task void taskZelda (void)
 				nextLinkPosY += nbPixelMove;
 				nextBackPosY += nbPixelMove;
 				nextLinkMovement = MOVE_DOWN;
+				preLinkMovement = MOVE_DOWN;
 				break;
 			}
 			case JOY_LEFT:
@@ -112,6 +185,7 @@ __task void taskZelda (void)
 				nextLinkPosX -= nbPixelMove;
 				nextBackPosX -= nbPixelMove;
 				nextLinkMovement = MOVE_LEFT;
+				preLinkMovement = MOVE_LEFT;
 				break;
 			}
 			case JOY_RIGHT:
@@ -119,6 +193,7 @@ __task void taskZelda (void)
 				nextLinkPosX += nbPixelMove;
 				nextBackPosX += nbPixelMove;
 				nextLinkMovement = MOVE_RIGHT;
+				preLinkMovement = MOVE_RIGHT;
 				break;
 			}
 			default:
@@ -127,6 +202,35 @@ __task void taskZelda (void)
 				break;
 			}
 		}
+		
+		if (!is_button_pressed(TAMPER))
+		{
+			switch(preLinkMovement)
+			{
+				case MOVE_UP:
+					animLinkSwordUp();
+					break;
+				case MOVE_DOWN:
+					animLinkSwordDown();
+					break;
+				case MOVE_RIGHT:
+					animLinkSwordRight();
+					break;
+				case MOVE_LEFT:
+					animLinkSwordLeft();
+					break;					
+				default:
+					break;
+			}
+		}
+		if (!is_button_pressed(USER))
+		{
+			while(!is_button_pressed(USER));
+			os_tsk_create(taskMenu,15);
+			os_tsk_delete_self ();
+			while(1);
+		}
+		
 		refreshScreen();		
 		os_dly_wait(5);
 	}
@@ -231,7 +335,7 @@ int updatePosBack()
 }
 
 void animLink(uint16_t nbAnimLink, uint16_t offsetX, uint16_t offsetY, 
-							uint16_t sizeX, uint16_t sizeY, uint16_t xDiff)
+							uint16_t sizeX, uint16_t sizeY, uint16_t xDiff,int16_t curLinkPosX, int16_t curLinkPosY )
 {
 	uint16_t curOffsetX;
 	
@@ -239,82 +343,108 @@ void animLink(uint16_t nbAnimLink, uint16_t offsetX, uint16_t offsetY,
 	{
 		stateAnim = 0;
 	}
-	curOffsetX = offsetX + stateAnim*30;
+	curOffsetX = offsetX + stateAnim*xDiff;
 
 	GPU_ClearRect(&Layer_2,0,0,320,240);
-	GPU_BitBlitI2L (&LinkSprite,curOffsetX,offsetY,sizeX,sizeY,&Layer_2,linkPosX,linkPosY);
+	GPU_BitBlitI2L (&LinkSprite,curOffsetX,offsetY,sizeX,sizeY,&Layer_2,curLinkPosX,curLinkPosY);
 }
 	
 void animLinkIdleDown()
 {
-	animLink(1, 11, 6, 20, 25 ,0);	
+	animLink(1, 11, 6, 20, 25 ,0, linkPosX, linkPosY);	
 }
 
 void animLinkIdleLeft()
 {
-	animLink(1, 41, 6, 20, 25 ,0);	
+	animLink(1, 41, 6, 20, 25 ,0, linkPosX, linkPosY);		
 }
 
 void animLinkIdleUp()
 {
-	animLink(1, 71, 6, 20, 25 ,0);	
+	animLink(1, 71, 6, 20, 25 ,0, linkPosX, linkPosY);	
 }
 
 void animLinkIdleRight()
 {
-	animLink(1, 101, 5, 20, 25 ,0);	
+	animLink(1, 101, 5, 20, 25 ,0, linkPosX, linkPosY);		
 }
 
 void animLinkDown()
 {
-	animLink(8, 11, 35, 20, 25 ,17);	
+	animLink(8, 11, 35, 20, 25 ,30, linkPosX, linkPosY);		
 }
 
 void animLinkUp()
 {
-	animLink(8, 11, 65, 20, 25 ,17);	
+	animLink(8, 11, 65, 20, 25 ,30, linkPosX, linkPosY);		
 }
 
 void animLinkLeft()
 {
-	animLink(6, 11, 100, 20, 25 ,17);	
+	animLink(6, 11, 100, 20, 25 ,30, linkPosX, linkPosY);	
 }
 
 void animLinkRight()
 {
-	animLink(6, 11, 135, 20, 25 ,17);	
+	animLink(6, 11, 135, 20, 25 ,30, linkPosX, linkPosY);	
 }
 
 void animLinkSwordDown()
 {
-	//animLink(6, 11, 125, 20, 25 ,17);	
+	int cptNbAnime = 0;
+	
+	for (cptNbAnime = 0 ; cptNbAnime < 6 ; ++cptNbAnime)
+	{
+		animLink(6, 2, 172, 47, 47 ,49, linkPosX-10, linkPosY-10);	
+		stateAnim++;
+		os_dly_wait(15);
+	}
+	animLinkIdleDown();
 }
 
 void animLinkSwordUp()
 {
-	//animLink(6, 11, 125, 20, 25 ,17);	
+	int cptNbAnime = 0;
+	
+	for (cptNbAnime = 0 ; cptNbAnime < 5 ; ++cptNbAnime)
+	{
+		animLink(5, 2, 221, 47, 47 ,49, linkPosX-10, linkPosY-10);	
+		stateAnim++;
+		os_dly_wait(15);
+	}
+	animLinkIdleUp();
 }
 	
 void animLinkSwordLeft()
 {
-	//animLink(6, 11, 125, 20, 25 ,17);	
+	int cptNbAnime = 0;
+	
+	for (cptNbAnime = 0 ; cptNbAnime < 5 ; ++cptNbAnime)
+	{
+		animLink(5, 2, 319, 47, 47 ,49, linkPosX-10, linkPosY-10);	
+		stateAnim++;
+		os_dly_wait(20);
+	}
+	animLinkIdleLeft();
 }
 
 void animLinkSwordRight()
 {
-	//animLink(6, 11, 125, 20, 25 ,17);	
+	int cptNbAnime = 0;
+	
+	for (cptNbAnime = 0 ; cptNbAnime < 5 ; ++cptNbAnime)
+	{
+		animLink(5, 2, 270, 47, 47 ,49, linkPosX-10, linkPosY-10);	
+		stateAnim++;
+		os_dly_wait(15);
+	}
+	animLinkIdleRight();
 }
 	
 int blockMovementLink()
 {
 	uint32_t cpt = 0;	
-	uint32_t mulCpt = 1;
-	
-	uint32_t linkDst;
-	
-	uint32_t offsetX = 0;
-	uint32_t offsetY = 0;
-	
+	uint32_t mulCpt = 1;	
 	uint32_t cursorX = 0;
 	uint32_t cursorY = 0;
 	
@@ -365,4 +495,6 @@ int blockMovementLink()
 	return 1;		
 }
 	
-	
+
+
+
