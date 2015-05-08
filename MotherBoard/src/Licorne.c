@@ -63,13 +63,12 @@ __task void taskUnicorn (void)
 	
 	uint8_t stateGif = 0;
 	
+	initGIF();
+	
 	GPU_NewImage(&back, 320, 240, "backu" ,Layer_1.addr);
 	SD_LoadImage(&back, 0, 0, &fil);
 	GPU_NewImage(&unicorn, 3200, 240, "uni", Layer_2.addr);
-	SD_LoadImage(&unicorn, 0, 0, &fil);
-	SD_LoadImageToLayer(&Layer_1, 0, 0, &fil, "backs");
-	
-	initGIF();
+	SD_LoadImage(&unicorn, 0, 0, &fil);	
 	
 	while(is_button_pressed(TAMPER))
 	{
