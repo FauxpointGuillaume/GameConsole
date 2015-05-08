@@ -119,8 +119,8 @@ __task void taskZelda (void)
 	
 	// Chargement des images du niveau de base	
 	GPU_NewImage(&backLink, mapDstX, mapDstY, "map", 0x0200000);
-	SD_LoadImage(&backLink, 320, 360, &fil);
-	GPU_NewImage(&LinkSprite, 1024, 1536, "linkSprite", 0x0100000);
+	SD_LoadImage(&backLink, mapDstX, mapDstY, &fil);
+	GPU_NewImage(&LinkSprite, 320, 360, "linkSprite", 0x0100000);
 	SD_LoadImage(&LinkSprite, 320, 360, &fil);
 	GPU_NewImage(&bootLink, 320, 240, "bootz", 0x0400000);
 	SD_LoadImage(&bootLink, 320, 240, &fil);
