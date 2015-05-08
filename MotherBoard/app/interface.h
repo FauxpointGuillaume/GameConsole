@@ -12,6 +12,7 @@
 	#ifndef INTERFACE_H
 	#define INTERFACE_H
 
+	#include <stm32f4xx.h>
 	#include "gpu_driver.h"
 
 /**
@@ -159,6 +160,16 @@
           uint16_t height;
           uint32_t addr;      
         }typedef GPU_Image;			
+        /**
+        * @brief  DMA conf class
+        */
+        struct GPU_DMAconf {
+					uint8_t  ongoing;
+          uint16_t width;
+          uint16_t height;
+          uint32_t addr;      
+        }typedef GPU_DMAconf;			
+
 	/**
     * @}
     */
@@ -432,11 +443,15 @@
         * @{
         */
 					/**
-            *	@brief NOT IMPLENMENTED
+            *	@brief DMA functions
             **/
             uint8_t GPU_checkDMA (void);
 						void GPU_PreSendDataToLayer(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GPU_Layer* layer);
-      /**
+						void GPU_PreSendDataToImage(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GPU_Image* image);
+						void GPU_DMAStartTransfer(void);
+						void GPU_DMAStopTransfer(void);
+
+/**
         * @}
         */
   /**
@@ -452,7 +467,7 @@
 		extern GPU_Layer Layer_2;
 		extern GPU_Layer Layer_3;
 		extern GPU_Layer Layer_4;
-
+		extern GPU_DMAconf	DMA_conf;
 	/**
 	* @}
 	*/

@@ -13,6 +13,7 @@
 	#define GPU_DRIVER_H
 
 	#include <stm32f4xx.h>
+
 /**
  * \page GPU_DRIVER GPU_DRIVER
  * \section GPU_DRIVER_intro Introduction

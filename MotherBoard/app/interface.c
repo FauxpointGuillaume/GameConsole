@@ -13,6 +13,8 @@ GPU_Layer Layer_2;
 GPU_Layer Layer_3;
 GPU_Layer Layer_4;
 
+GPU_DMAconf	DMA_conf;
+
 /**
   ******************************************************************************
 	*	SERVICES
@@ -344,7 +346,7 @@ GPU_Layer Layer_4;
 
 	// On clear l'écran tout entier
 	void GPU_ClearScreen (GPU_Layer* layer){
-		GPU_ClearRect(layer, 0, 0, layer->height, layer->width);
+		GPU_ClearRect(layer, 0, 0, layer->width, layer->height);
 	}
 
 
@@ -722,9 +724,15 @@ uint8_t GPU_checkDMA (void)
 	return (GPU_ReadReg(DMACTRL) & 0x2);
 }
 
-void GPU_PreSendDataToLayer(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GPU_Layer* layer)
-{
+void GPU_PreSendDataToLayer(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GPU_Layer* layer){
 	uint32_t addr = layer->addr + x + y*layer->width;
+
+	DMA_conf.ongoing = 0;
+	DMA_conf.addr = layer->addr;
+	DMA_conf.height = dx;
+	DMA_conf.width = dy;
+	
+	while ( GPU_checkDMA() != 0) {}
 	
 	GPU_WriteReg(DMADSTADDR_L,addr&0xFFFF);
 	GPU_WriteReg(DMADSTADDR_H,(addr&0xFFFF0000)>>16);
@@ -736,4 +744,49 @@ void GPU_PreSendDataToLayer(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GP
 	
 	GPU_WriteReg(DMACTRL,0x1);
 }
+
+void GPU_PreSendDataToImage(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, GPU_Image* image){
+	uint32_t addr = image->addr + x + y*image->width;
+
+	DMA_conf.ongoing = 0;
+	DMA_conf.addr = image->addr;
+	DMA_conf.height = dx;
+	DMA_conf.width = dy;
 	
+	while ( GPU_checkDMA() != 0) {}
+	
+	GPU_WriteReg(DMADSTADDR_L,addr&0xFFFF);
+	GPU_WriteReg(DMADSTADDR_H,(addr&0xFFFF0000)>>16);
+	
+	GPU_WriteReg(DMAIMGSIZE_L, dx);
+	GPU_WriteReg(DMAIMGSIZE_H, dy);
+	
+	GPU_WriteReg(DMADSTSIZER,image->width);
+	
+	GPU_WriteReg(DMACTRL,0x1);
+}
+
+
+void GPU_DMAStartTransfer(){
+	uint32_t size = DMA_conf.height*DMA_conf.width;
+	uint32_t i;
+	DMA_conf.ongoing = 1;
+
+	while( GPU_read_GPIO_busy() !=0){};
+	_gpu_access_addr(DMADATA);	
+	while( GPU_read_GPIO_busy() !=0){};
+
+	for(i=0; i<size; i++){
+		_gpu_write_data(0x0000);
+	}
+}
+
+void GPU_DMAStopTransfer(){
+	DMA_conf.ongoing = 0;
+	
+	if(GPU_checkDMA() != 0){
+		while(GPU_ReadReg(DMAPIXCNT_L) > 0){
+			GPU_WriteReg(DMADATA, 0x0000);
+		}
+	}
+}

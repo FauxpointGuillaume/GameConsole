@@ -26,6 +26,12 @@
 /* id1, will contain task identifications at run-time */
 OS_TID id1;
 
+/* Demo task */
+__task void taskDemo (void) ;
+
+/* Credit task */
+__task void taskCredit (void);
+
 /* Main program : Initialize the system and start the first task */
 int main (void)
 {	
@@ -118,7 +124,7 @@ __task void taskMenu (void)
 	
 	// Load the image from the SD card to the graphic card
 	GPU_NewImage(&background, 320, 240,"menu", 0x0500000);
-	// SD_LoadImage(&background, Plane_One, 0, 0, &fil);
+	SD_LoadImage(&background, 320, 240, &fil);
 	GPU_BitBlitI2L(&background, 0, 0, 320, 240,&Layer_1, 0,0);
 	
 	// Display the two optionnal menu
@@ -289,6 +295,17 @@ __task void taskMenu (void)
 			os_tsk_create (taskZelda, 10);
 			break;
 		}
+		case 3:
+		{
+			os_tsk_create (taskDemo, 10);
+			break;
+		}
+		case 4:
+		{
+			os_tsk_create (taskCredit, 10);
+			break;
+		}
+		
 	}
 	
 	// Destroy the task
@@ -297,9 +314,56 @@ __task void taskMenu (void)
 }
 
 /*----------------------------------------------------------------------------
- *   Task 1:  RTX Kernel starts this task with os_sys_init (taskMenu)
+ *   Task 4:  Demo
  *---------------------------------------------------------------------------*/
-/*__task void taskDemo (void) 
-{}*/
+__task void taskDemo (void) 
+{
+// lalalala je suis une demo
+
+	// Pour patienter
+	os_dly_wait(100); // en pas de 10 ms
+	
+	
+	// fin de la demo, pour relancer le menu
+	os_tsk_create(taskMenu,15);
+	os_tsk_delete_self ();
+	while (1){};
+	
+}
+
+/*----------------------------------------------------------------------------
+ *   Task 5:  Credit
+ *---------------------------------------------------------------------------*/
+__task void taskCredit (void) 
+{
+	GPU_Image credit;
+	
+	GPU_ConfigureLayer(&Layer_1,LAYER1_START_ADDRESS,320,240);
+
+	Display_conf.Enable =1;
+	Display_conf.Alpha_On =1;
+	Display_conf.Plan_Enable = 0x1;
+	Display_conf.Test_On=0;
+	
+	GPU_UpdateDisplayConfig();
+	
+	GPU_HScroll (&Layer_1, 0,1);
+	GPU_VScroll (&Layer_1, 0,1);
+	
+	// Load the image from the SD card to the graphic card
+	GPU_NewImage(&credit, 320, 240,"credit", 0x0500000);
+	SD_LoadImage(&credit, 320, 240, &fil);
+	GPU_BitBlitI2L(&credit, 0, 0, 320, 240,&Layer_1, 0,0);
+	
+	// Waiting the user to press the user button
+	while(is_button_pressed(USER));	
+	
+	// fin de la demo, pour relancer le menu
+	os_tsk_create(taskMenu,15);
+	os_tsk_delete_self ();
+	while (1){};
+	
+}
+
 
 

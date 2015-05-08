@@ -27,9 +27,6 @@ void initSOR(){
 	
 	GPU_HScroll (&Layer_4, 0,1);
 	GPU_VScroll (&Layer_4, 0,1);
-	
-	
-	GPU_ConfigureOutput(MODE_VGA);
 }
 
 void shortMovieEnding(GPU_Image *image)
@@ -112,7 +109,9 @@ void StreetOfRage()
 	GPU_Image Blaze;
 		
 	GPU_NewImage(&Axel,320,240,"axel",base);
+	SD_LoadImage(&Axel, 0, 0, &fil);
 	GPU_NewImage(&Blaze,320,240,"blaze",base_b);
+	SD_LoadImage(&Blaze, 0, 0, &fil);
 	
 	GPU_ClearRect(&Layer_2,0,0,320,240);
 

@@ -118,9 +118,12 @@ __task void taskZelda (void)
 	uint32_t touche;
 	
 	// Chargement des images du niveau de base	
-	GPU_NewImage(&backLink, mapDstX, mapDstY, "back", 0x0200000);
-	GPU_NewImage(&LinkSprite, 320, 360, "link", 0x0100000);
-	GPU_NewImage(&bootLink, 320, 240, "boot", 0x0400000);
+	GPU_NewImage(&backLink, mapDstX, mapDstY, "map", 0x0200000);
+	SD_LoadImage(&backLink, 320, 360, &fil);
+	GPU_NewImage(&LinkSprite, 1024, 1536, "linkSprite", 0x0100000);
+	SD_LoadImage(&LinkSprite, 320, 360, &fil);
+	GPU_NewImage(&bootLink, 320, 240, "bootz", 0x0400000);
+	SD_LoadImage(&bootLink, 320, 240, &fil);
 	
 	GPU_ConfigureLayer(&Layer_1, LAYER1_START_ADDRESS, backSizeX, backSizeY);
 	GPU_ConfigureLayer(&Layer_2, LAYER2_START_ADDRESS, 320, 380);
@@ -145,8 +148,6 @@ __task void taskZelda (void)
 	GPU_ClearScreen(&Layer_2);
 	GPU_ClearScreen(&Layer_3);
 	GPU_ClearScreen(&Layer_4);
-	
-	GPU_ConfigureOutput(MODE_VGA);
 	
 	bootMenu();	
 	

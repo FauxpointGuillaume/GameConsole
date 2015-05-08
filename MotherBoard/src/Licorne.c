@@ -20,9 +20,6 @@ void initGIF()
 	
 	GPU_HScroll (&Layer_2, 0,1);
 	GPU_VScroll (&Layer_2, 0,1);
-	
-	
-	GPU_ConfigureOutput(MODE_VGA);	
 }
 
 void GIF(GPU_Layer *layer)
@@ -66,10 +63,11 @@ __task void taskUnicorn (void)
 	
 	uint8_t stateGif = 0;
 	
-	GPU_NewImage(&back, 320, 240, "back" ,Layer_1.addr);
-	// SD_LoadImage(&back, Plane_One, 0, 0, &fil);
+	GPU_NewImage(&back, 320, 240, "backu" ,Layer_1.addr);
+	SD_LoadImage(&back, 0, 0, &fil);
 	GPU_NewImage(&unicorn, 3200, 240, "uni", Layer_2.addr);
-	// SD_LoadImage(&unicorn, Plane_Two, 0, 0, &fil);
+	SD_LoadImage(&unicorn, 0, 0, &fil);
+	SD_LoadImagetToLayer(&Layer_1, 0, 0, &fil, "backs");
 	
 	initGIF();
 	

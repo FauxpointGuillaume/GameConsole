@@ -1,15 +1,5 @@
 /**
   ******************************************************************************
-  * @file    sd.c
-  * @author  Jeremy LAUVIGE (4AE-SE) 
-  * @version V0.1
-  * @date    14-Mars-2014
-  * @brief  Contient toutes les fonctions utiles au fonctionnement général 
-  ******************************************************************************
-  */
-
-/**
-  ******************************************************************************
 	*	Includes
   ******************************************************************************
   */
@@ -84,7 +74,7 @@ FRESULT readImageFiles(FIL* fil)
 	UINT BytesRead; // nombre d'octet lus en une fois
 	UINT AllBytesRead = 0; // nombre d'octet lus en tout
 	
-	FRESULT res;
+	FRESULT res; 
 
 	uint16_t buffer = 0;// = (uint16_t*) CG_RAM; // variable qui va recevoir les données. Adresse a préciser
 	BytesToRead = fil->fsize; //pour avoir la taille en octet du fichier
@@ -94,22 +84,18 @@ FRESULT readImageFiles(FIL* fil)
 		res = FR_INT_ERR;
 		res = f_read(fil, &buffer, 2 , &BytesRead); 
 
-	while(res != FR_OK)
-	{
-		BytesRead = 0;
-		res = f_read(fil, &buffer, 2 , &BytesRead); // pour read et write, penser a modifier le ffconf.h pour les activer				
+		while(res != FR_OK)
+		{
+			BytesRead = 0;
+			res = f_read(fil, &buffer, 2 , &BytesRead); // pour read et write, penser a modifier le ffconf.h pour les activer				
+		}
+		GPU_DATA16 = buffer;
+		AllBytesRead = AllBytesRead + BytesRead ;
 	}
-
-	//*((uint16_t *) CG_RAM) = buffer;	
-
-	AllBytesRead = AllBytesRead + BytesRead ;
-	}
-
 	return res;
 }	
 
-FRESULT SD_LoadImage(GPU_Image *image, GPU_Layer *layer, int dx, int dy, FIL* fil)
-{
+FRESULT SD_LoadImage(GPU_Image *image, int dx, int dy, FIL* fil){
 	FRESULT res;
 	
 	if ((res = openImageFileRead(image->name, fil)) != FR_OK)
@@ -117,18 +103,50 @@ FRESULT SD_LoadImage(GPU_Image *image, GPU_Layer *layer, int dx, int dy, FIL* fi
 		return res;
 	}
 	
-	//GPU_PreSendData(image, dx, dy, layer);
+	GPU_PreSendDataToImage(0, 0, dx, dy, image);
+	GPU_DMAStartTransfer();	
 	
 	if ((res = readImageFiles(fil)) != FR_OK)
 	{
+		GPU_DMAStopTransfer();
 		return res;
 	}
+	GPU_DMAStopTransfer();
+	
 	if ((res = closeImageFile(fil)) != FR_OK)
 	{
 		return res;
 	}	
 	return res;
 }
+
+
+FRESULT SD_LoadImagetToLayer(GPU_Layer *layer, int dx, int dy, FIL* fil, char nom[100]){
+	FRESULT res;
+	
+	if ((res = openImageFileRead(nom, fil)) != FR_OK)
+	{
+		return res;
+	}
+	
+	GPU_PreSendDataToLayer(0, 0, dx, dy, layer);
+	GPU_DMAStartTransfer();	
+	
+	if ((res = readImageFiles(fil)) != FR_OK)
+	{
+		GPU_DMAStopTransfer();
+		return res;
+	}
+	GPU_DMAStopTransfer();
+	
+	if ((res = closeImageFile(fil)) != FR_OK)
+	{
+		return res;
+	}	
+	return res;
+}
+	
+
 
 
 // Changez cette fonction pour prendre en compte le nom
@@ -146,10 +164,10 @@ FRESULT SD_StartConvertion(GPU_Image *image, char fileNameIn[100],
 		return res;
 	}	
 	// Ouverture de l'image qui va être convertit
-	if ((res = openImageFileWrite(image->name, filOut)) != FR_OK)
+/*	if ((res = openImageFileWrite(image->name, filOut)) != FR_OK)
 	{
 		return res;
-	}	
+	}	*/
 	
 	// Convertion de l'image BMP
 	Convertion(filIn, filOut, alphaBack, pixelTransparent, alphaPixelOn);	
@@ -187,3 +205,7 @@ void SD_SDIO_DMA_IRQHANDLER(void)
 {
 	SD_ProcessDMAIRQ();
 }
+
+
+
+

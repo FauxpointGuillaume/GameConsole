@@ -1,16 +1,6 @@
-	/**
-  ******************************************************************************
-  * @file    sd.h
-  * @author  Jeremy LAUVIGE (4AE-SE) 
-  * @version V0.1
-  * @date    12-May-2014
-  * @brief  Contient toutes les références des fonctions utiles concernant la carte SD 
-  ******************************************************************************
-  */
-
-#ifndef sd
-#define sd
-
+#ifndef SD_H
+#define SD_H
+	
 #include "global.h"
 #include "interface.h"
 #include "BmpConvertor.h"
@@ -30,8 +20,10 @@
 	FRESULT closeImageFile(FIL* fil);
 	FRESULT readImageFiles(FIL* fil);
 	
-	FRESULT SD_LoadImage(GPU_Image *image, GPU_Layer *layer, int dx, int dy, FIL* fil);
+	FRESULT SD_LoadImage(GPU_Image *image, int dx, int dy, FIL* fil);
 	FRESULT SD_LoadImageBmp(GPU_Image *image, char fileNameIn[100], GPU_Layer *layer, int dx, int dy, FRESULT* res, FIL* fil, FATFS* fs32);
+	FRESULT SD_LoadImagetToLayer(GPU_Layer *layer, int dx, int dy, FIL* fil, char nom[100]);
+	
 	
 	FRESULT SD_StartConvertion(GPU_Image *image, char fileNameIn[100],
 	FIL* filIn, FIL* filOut,
@@ -41,4 +33,3 @@
 	void SD_SDIO_DMA_IRQHANDLER(void);
 
 #endif
-
